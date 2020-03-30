@@ -1,6 +1,7 @@
+<?php include 'view/header-admin.php'; ?>
 <main>
     <nav>
-        <form action="." method="get" id="make_selection">
+        <form action="zua-admin.php" method="get" id="make_selection">
             <section id="dropmenus">
                 <?php if ( sizeof($makes) != 0) { ?>
                     
@@ -64,6 +65,7 @@
                             <th>Type</th>
                             <th>Class</th>
                             <th>Price</th>
+                            <th>&nbsp;</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -83,6 +85,14 @@
                                 <td><?php echo $vehicle['className']; ?></td>
                             <?php } ?>
                             <td><?php echo "$".number_format($vehicle['price'], 2); ?></td>
+                            <td>
+                                <form action="zua-admin.php" method="post">
+                                    <input type="hidden" name="action" value="delete_vehicle">
+                                    <input type="hidden" name="vehicle_id"
+                                        value="<?php echo $vehicle['vehicleID']; ?>">
+                                    <input type="submit" value="Remove" class="button red">
+                                </form>
+                            </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -94,4 +104,5 @@
             </p>     
         <?php } ?>
     </section>
+    <?php include 'view/zippy-links.php'; ?>
 </main>

@@ -19,14 +19,9 @@
         $make = filter_input(INPUT_GET, 'make');
         $sort = filter_input(INPUT_GET, 'sort');
 
-        switch ($sort):
-            case "price":
-                break;
-            case "year":
-                break;
-            default:
-                $sort = "price"; //if NULL, FALSE, or anything other than price or year
-        endswitch;
+        if ($sort == NULL || $sort == FALSE) {
+            $sort = 'price';
+        }
 
         if ($type_id != NULL && $type_id != FALSE) {
             $type_name = get_type_name($type_id);
@@ -43,15 +38,16 @@
         $types = get_types();
         $classes = get_classes();
         $makes = get_makes();
-        include('view/header.php');
-        include('vehicle_list.php');
+        include('zua_vehicle_list.php');
         include('view/footer.php');
     } else if ($action == 'list_types') {
         $types = get_types();
         include('type_list.php');
+        include('view/footer.php');
     } else if ($action == 'list_classes') {
         $classes = get_classes();
         include('class_list.php');
+        include('view/footer.php');
     } else if ($action == 'delete_vehicle') {
         $vehicle_id = filter_input(INPUT_POST, 'vehicle_id', FILTER_VALIDATE_INT);
         if ($vehicle_id == NULL || $vehicle_id == FALSE) {
@@ -59,7 +55,7 @@
             include('errors/error.php');
         } else {
             delete_vehicle($vehicle_id);
-            header("Location: .?class_id=$class_id"); //Zippys Back End page
+            header("Location: zua-admin.php"); //Zippys Back End page
         }
     } else if ($action == 'delete_type') {
         $type_id = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
@@ -68,7 +64,7 @@
             include('errors/error.php');
         } else {
             delete_type($type_id);
-            header("Location: .?action=list_types");
+            header("Location: zua-admin.php?action=list_types");
         }
     } else if ($action == 'delete_class') {
         $class_id = filter_input(INPUT_POST, 'class_id', FILTER_VALIDATE_INT);
@@ -77,12 +73,13 @@
             include('errors/error.php');
         } else {
             delete_class($class_id);
-            header("Location: .?action=list_classes");
+            header("Location: zua-admin.php?action=list_classes");
         }
     } else if ($action == 'show_add_form') {
         $classes = get_classes();
         $types = get_types();
         include('add_vehicle_form.php');
+        include('view/footer.php');
     } else if ($action == 'add_vehicle') {
         $type_id = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
         $class_id = filter_input(INPUT_POST, 'class_id', FILTER_VALIDATE_INT);
@@ -95,16 +92,16 @@
             include('errors/error.php');
         } else {
             add_vehicle($type_id, $class_id, $year, $make, $model, $price);
-            header("Location: .");
+            header("Location: zua-admin.php");
         }
     } else if ($action == 'add_type') {
         $type_name = filter_input(INPUT_POST, 'type_name');
         add_type($type_name);
-        header("Location: .?action=list_types");
+        header("Location: zua-admin.php?action=list_types");
     } else if ($action == 'add_class') {
         $class_name = filter_input(INPUT_POST, 'class_name');
         add_class($class_name);
-        header("Location: .?action=list_classes");
+        header("Location: zua-admin.php?action=list_classes");
     }
 ?> 
 
