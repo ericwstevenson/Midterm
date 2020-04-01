@@ -1,3 +1,13 @@
+<?php
+session_start();
+if(isset($_SESSION['firstname'])){
+	$_SESSION['firstname'];
+	echo "<p align='right' >Welcome, " . $_SESSION['firstname'] . "! (<a href='logout.php'>Sign Out)</a></p>";
+} else {
+	echo "<p align='right' ><a href='register.php'>Register</a></p>";
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
